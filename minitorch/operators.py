@@ -1,6 +1,7 @@
 """Collection of the core mathematical operators used throughout the code base."""
 
 import math
+from typing import Callable, Iterable
 
 # ## Task 0.1
 
@@ -132,26 +133,98 @@ def relu_back(x: float, b: float) -> float:
 # - map
 # - zipWith
 # - reduce
-#
+
+def map(fn: Callable[[float], float], ls: Iterable[float]) -> Iterable[float]:
+    """
+    Applies a given function to each element of an iterable.
+    
+    Args:
+        fn: A function that takes a float and returns a float.
+        ls: An iterable of floats.
+    
+    Returns:
+        An iterable containing the results of applying fn to each element in ls.
+    """
+    return (fn(x) for x in ls)
+
+def zipWith(fn: Callable[[float, float], float], ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    """
+    Applies a given function to pairs of elements from two iterables.
+    
+    Args:
+        fn: A function that takes two floats and returns a float.
+        ls1: An iterable of floats.
+        ls2: An iterable of floats.
+    
+    Returns:
+        An iterable containing the results of applying fn to pairs of elements from ls1 and ls2.
+    """
+    return (fn(x, y) for x, y in zip(ls1, ls2))
+
+def reduce(fn: Callable[[float, float], float], start: float, ls: Iterable[float]) -> float:
+    """
+    Reduces an iterable to a single value using a given function.
+    
+    Args:
+        fn: A function that takes two floats and returns a float.
+        start: The initial value for the reduction.
+        ls: An iterable of floats.
+    
+    Returns:
+        The final result of applying fn cumulatively to the elements of ls.
+    """
+    result = start
+    for x in ls:
+        result = fn(result, x)
+    return result
+
+
 # Use these to implement
 # - negList : negate a list
 # - addLists : add two lists together
 # - sum: sum lists
 # - prod: take the product of lists
 
+def negList(original: Iterable[float]) -> Iterable[float]:
+    """
+    Negates each element in the input iterable.
+    
+    Args:
+        original: An iterable of floats.
+    
+    Returns:
+        An iterable containing the negated values of the input.
+    """
+    return list(map(fn=neg, ls=original))
 
-# TODO: Implement for Task 0.3.
-def negList():
-    return NotImplemented
 
+def addLists(ls1: Iterable[float], ls2: Iterable[float]) -> Iterable[float]:
+    """
+    Add corresponding list elements from two lists.
 
-def addLists():
-    return NotImplemented
+    Args:
+        ls1: An iterable of floats
+        ls2: An iterable of floats
 
+    Returns:
+        An iterable containing corresponding values of ls1 and ls2 added together.
+    """
+    return list(zipWith(fn=add, ls1=ls1, ls2=ls2))
 
-def sum():
-    return NotImplemented
+def sum(ls: Iterable[float]) -> float:
+    """
+    Sum all elements in a list using reduce
 
+    Args:
+        ls: An iterable of floats
+    """
+    return reduce(fn=add, start=0, ls=ls)
 
-def prod():
-    return NotImplemented
+def prod(ls: Iterable[float]) -> float:
+    """
+    Calculate the product of all elements in a list using reduce
+
+    Args:
+        ls: An iterable of floats
+    """
+    return reduce(fn=mul, start=1, ls=ls)

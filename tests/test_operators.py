@@ -132,14 +132,15 @@ def test_transitive(a: float, b: float, c: float) -> None:
     # a < b and b < c implies a < c
     if lt(a, b) and lt(b, c):
         assert lt(a, c) == 1.0
-    
+
     # a = b and b < c implies a < c
     if eq(a, b) == 1.0 and lt(b, c) == 1.0:
         assert lt(a, c) == 1.0
-    
+
     # a < b and b = c implies a < c
     if lt(a, b) == 1.0 and eq(b, c) == 1.0:
         assert lt(a, c) == 1.0
+
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats)
@@ -147,7 +148,8 @@ def test_symmetric(a: float, b: float) -> None:
     """Write a test that ensures that :func:`minitorch.operators.mul` is symmetric, i.e.
     gives the same value regardless of the order of its input.
     """
-    assert_close(a*b, b*a)
+    assert_close(a * b, b * a)
+
 
 @pytest.mark.task0_2
 @given(small_floats, small_floats, small_floats)
@@ -155,7 +157,7 @@ def test_distribute(a: float, b: float, c: float) -> None:
     r"""Write a test that ensures that your operators distribute, i.e.
     :math:`z \times (x + y) = z \times x + z \times y`
     """
-    assert_close(a*(b+c), (a*b)+(a*c))
+    assert_close(a * (b + c), (a * b) + (a * c))
 
 
 @pytest.mark.task0_2
@@ -164,8 +166,8 @@ def test_other(a: float, b: float) -> None:
     """Write a test that ensures some other property holds for your functions."""
 
     # a-b = a+(-b)
-    
-    assert_close(a-b, add(a, neg(b)))
+
+    assert_close(a - b, add(a, neg(b)))
 
 
 # ## Task 0.3  - Higher-order functions
@@ -192,8 +194,14 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     """Write a test that ensures that the sum of `ls1` plus the sum of `ls2`
     is the same as the sum of each element of `ls1` plus each element of `ls2`.
     """
-    # TODO: Implement for Task 0.3.
-    raise NotImplementedError("Need to implement for Task 0.3")
+    # Calculate the sum of the sums
+    sum_of_sums = sum(ls1) + sum(ls2)
+    
+    # Calculate the sum of element-wise additions
+    element_wise_sum = sum(addLists(ls1, ls2))
+    
+    # Assert that both results are close
+    assert_close(sum_of_sums, element_wise_sum)
 
 
 @pytest.mark.task0_3
