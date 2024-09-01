@@ -196,10 +196,10 @@ def test_sum_distribute(ls1: List[float], ls2: List[float]) -> None:
     """
     # Calculate the sum of the sums
     sum_of_sums = sum(ls1) + sum(ls2)
-    
+
     # Calculate the sum of element-wise additions
     element_wise_sum = sum(addLists(ls1, ls2))
-    
+
     # Assert that both results are close
     assert_close(sum_of_sums, element_wise_sum)
 
